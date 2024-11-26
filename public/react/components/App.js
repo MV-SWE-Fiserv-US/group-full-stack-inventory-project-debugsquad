@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import  {ItemsList}  from './ItemsList';
 import {Item}  from './Item';
 import { AddItemForm } from './AddItemForm';
+import {Headers} from './Headers';
 
 
 // import and prepend the api url to any fetch calls
@@ -70,8 +71,8 @@ export const App = () => {
 
 	return (
 		<main>
+			<Headers />
 			{selectItem ? <Item item={item} setSelectItem ={setSelectItem} selectItem={selectItem} setItem={setItem} setRefresh={setRefresh}/> : <>
-      	<h1>ITEMS</h1>
 			<ItemsList setItemId ={setItemId} setSelectItem= {setSelectItem} items={items} setItem={setItem}/> </> }
 			<button onClick={() => handleDeleteItem(itemId)}>Delete</button>
             <button onClick={toggleForm}>

@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import apiURL from "../api";
+import "./item.css";
 
 export const Item = (props) => {
 
@@ -41,37 +42,33 @@ export const Item = (props) => {
     }
   }
 
-  return < div className='container, mx-auto'>
+  return < div className='Itemcontainer'>
 
     <div className='row'>
-      <div className='col-3'>
+      <div className='col-3 item'>
         <button>{props.item.name}</button>
       </div>
-      <div className='col-3'>
+      <div className='col-4 item'>
         <p>{props.item.description}</p>
       </div>
-      <div className='col-1'>
+      <div className='col-1 item'>
 
         <p>{props.item.price}</p>
       </div>
-      <div className='col-1'>
+      <div className='col-1 item'>
 
         <p>{props.item.category}</p>
       </div>
-      <div className='col-3 image' >
+      <div className='col-3 image item' >
         <img src={props.item.image} alt={props.item.name} />
 
       </div>
-      <div className='col-1'>
-
-        <button onClick={() => props.setSelectItem(false)}>Back</button>
-      </div>
     </div>
     <>
-      <button onClick={() => props.setSelectItem(false)}>Back</button>
+      {/* <button onClick={() => props.setSelectItem(false)}>Back</button>
       <button onClick={() => setViewUpdateForm(!viewUpdateForm)}>
         {viewUpdateForm ? "Cancel" : "Update"}
-      </button>
+      </button> */}
       {viewUpdateForm ? (
         <form onSubmit={handleSubmit}>
           <label>
@@ -124,5 +121,5 @@ export const Item = (props) => {
       ) : null}
     </>
   </div>
-  
+
 };
