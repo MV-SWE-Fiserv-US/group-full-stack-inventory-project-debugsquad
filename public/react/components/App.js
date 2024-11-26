@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import  {ItemsList}  from './ItemsList';
 import {Item}  from './Item';
-import {Headers} from './Headers';
+import { AddItemForm } from './AddItemForm';
 
 
 // import and prepend the api url to any fetch calls
 import apiURL from '../api';
 
 export const App = () => {
+
 	const [selectItem, setSelectItem] = useState(false);
 	const [items, setItems] = useState([]);
 	const [item, setItem] = useState({});
 	const [itemId, setItemId] = useState(null);
+	const [refresh, setRefresh] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
 	
 	async function fetchItem(){
@@ -36,6 +39,24 @@ export const App = () => {
 			console.log("Oh no an error! ", err)
 		}
 	} 
+
+	const handleDeleteItem = async() => {
+		try {
+			const response = await fetch(`${apiURL}/items/${itemId}`, {
+				method: 'DELETE'
+			});
+		if (response.status === 204) {
+		 	await fetchItems();
+			setSelectItem(false);
+		}
+	} catch (err) {
+		console.log("Oh no an error! ", err) 
+	}}
+  
+   const toggleForm = () => {
+        setShowForm(prevState => !prevState);
+      };
+
 	useEffect(() => {
 		if (selectItem) {
 			fetchItem();
@@ -44,14 +65,22 @@ export const App = () => {
 			
 		}
 		
-	}, [selectItem, itemId]);
+	}, [selectItem, itemId, refresh]);
 	
 
 	return (
 		<main>
-			<Headers />
-			{selectItem ? <Item item={item} setSelectItem ={setSelectItem} /> : <>
+			{selectItem ? <Item item={item} setSelectItem ={setSelectItem} selectItem={selectItem} setItem={setItem} setRefresh={setRefresh}/> : <>
+      	<h1>ITEMS</h1>
 			<ItemsList setItemId ={setItemId} setSelectItem= {setSelectItem} items={items} setItem={setItem}/> </> }
+			<button onClick={() => handleDeleteItem(itemId)}>Delete</button>
+            <button onClick={toggleForm}>
+              {showForm ? 'Cancel' : 'Add Item'}
+            </button>
+  
+            {/* Render AddItemForm if showForm is true */}
+            {showForm && <AddItemForm setItems={setItems} />}
 		</main>
 	)
 }
+
